@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const AppContainer = styled.div`
-  width: 300px;
+  width: 400px;
   padding: 20px;
   font-size: 20px;
 `;
@@ -20,9 +20,19 @@ export const Form = styled.form`
 export const LabelName = styled.label`
   display: flex;
   flex-direction: column;
+  margin-bottom: 25px;
+`;
+
+export const LabelNumber = styled.label`
+  display: flex;
+  flex-direction: column;
 `;
 
 export const InputName = styled.input`
+  margin-top: 10px;
+`;
+
+export const InputNumber = styled.input`
   margin-top: 10px;
 `;
 

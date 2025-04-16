@@ -3,7 +3,9 @@ import { nanoid } from 'nanoid';
 import {
   AppContainer,
   LabelName,
+  LabelNumber,
   InputName,
+  InputNumber,
   Form,
   Button,
   Title,
@@ -12,28 +14,40 @@ import {
 
 export class App extends Component {
   state = {
-    contacts: [],
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    filter: '',
     name: '',
+    number: '',
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    const { name } = e.target.elements;
+    const { name, number } = e.target.elements;
 
     this.setState(prevState => ({
-      contacts: [...prevState.contacts, { name: name.value, id: nanoid() }],
+      contacts: [
+        ...prevState.contacts,
+        { id: nanoid(), name: name.value, number: number.value },
+      ],
     }));
     this.resetForm();
   };
 
   handleInputChange = e => {
+    // console.dir(e.target.name);
+    const { value, name } = e.target;
     this.setState({
-      name: e.target.value,
+      [name]: value,
     });
   };
 
   resetForm = () => {
-    this.setState({ name: '' });
+    this.setState({ name: '', number: '' });
   };
 
   render() {
@@ -46,13 +60,25 @@ export class App extends Component {
             <InputName
               type="text"
               name="name"
-              // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              pattern="^[a-zA-Zа-яА-ЯёЁ]+([ \u0027\-][a-zA-Zа-яА-ЯёЁ]+)*$"
               title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
               value={this.state.name}
               onChange={this.handleInputChange}
               required
             />
           </LabelName>
+          <LabelNumber>
+            Number
+            <InputNumber
+              type="tel"
+              name="number"
+              pattern="^\+?[0-9\-\.\(\) ]{4,20}$"
+              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+              value={this.state.number}
+              onChange={this.handleInputChange}
+              required
+            />
+          </LabelNumber>
           <Button type="submit">Add contacts</Button>
         </Form>
         <div>
@@ -60,7 +86,9 @@ export class App extends Component {
           {this.state.contacts.length > 0 && (
             <ul>
               {this.state.contacts.map(contact => (
-                <li key={contact.id}> {contact.name}</li>
+                <li key={contact.id}>
+                  {contact.name}: {contact.number}
+                </li>
               ))}
             </ul>
           )}
