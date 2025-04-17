@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const AppContainer = styled.div`
   width: 400px;
-  padding: 20px;
+  margin: 0 auto;
   font-size: 20px;
 `;
 
@@ -28,12 +28,29 @@ export const LabelNumber = styled.label`
   flex-direction: column;
 `;
 
+export const LabelFilter = styled.label`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const InputName = styled.input`
   margin-top: 10px;
 `;
 
 export const InputNumber = styled.input`
   margin-top: 10px;
+`;
+
+export const InputFilter = styled.input`
+  margin-top: 10px;
+  /* padding: 0; */
+  width: 200px;
+  &:focus-visible {
+    outline-offset: 0;
+  }
+  &::-webkit-search-cancel-button {
+    cursor: pointer;
+  }
 `;
 
 export const Button = styled.button`

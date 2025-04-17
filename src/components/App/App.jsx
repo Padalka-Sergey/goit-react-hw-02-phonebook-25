@@ -4,8 +4,10 @@ import {
   AppContainer,
   LabelName,
   LabelNumber,
+  LabelFilter,
   InputName,
   InputNumber,
+  InputFilter,
   Form,
   Button,
   Title,
@@ -39,7 +41,6 @@ export class App extends Component {
   };
 
   handleInputChange = e => {
-    // console.dir(e.target.name);
     const { value, name } = e.target;
     this.setState({
       [name]: value,
@@ -51,6 +52,10 @@ export class App extends Component {
   };
 
   render() {
+    const { contacts, filter, name, number } = this.state;
+    const filterNames = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
     return (
       <AppContainer>
         <Title>Phonebook</Title>
@@ -62,7 +67,7 @@ export class App extends Component {
               name="name"
               pattern="^[a-zA-Zа-яА-ЯёЁ]+([ \u0027\-][a-zA-Zа-яА-ЯёЁ]+)*$"
               title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              value={this.state.name}
+              value={name}
               onChange={this.handleInputChange}
               required
             />
@@ -74,7 +79,7 @@ export class App extends Component {
               name="number"
               pattern="^\+?[0-9\-\.\(\) ]{4,20}$"
               title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-              value={this.state.number}
+              value={number}
               onChange={this.handleInputChange}
               required
             />
@@ -83,9 +88,20 @@ export class App extends Component {
         </Form>
         <div>
           <SubTitle>Contacts</SubTitle>
-          {this.state.contacts.length > 0 && (
+          <LabelFilter>
+            Find contacts by name
+            <InputFilter
+              type="search"
+              name="filter"
+              title="Сontact search field"
+              value={filter}
+              onChange={this.handleInputChange}
+              required
+            />
+          </LabelFilter>
+          {contacts.length > 0 && (
             <ul>
-              {this.state.contacts.map(contact => (
+              {filterNames.map(contact => (
                 <li key={contact.id}>
                   {contact.name}: {contact.number}
                 </li>
