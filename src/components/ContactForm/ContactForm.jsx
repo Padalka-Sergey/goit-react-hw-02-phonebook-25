@@ -15,7 +15,15 @@ export class ContactForm extends Component {
   };
 
   handleSubmit = e => {
+    const { name } = e.target.elements;
     e.preventDefault();
+    if (
+      this.props.contacts.some(
+        contact => contact.name.toLowerCase() === name.value.toLowerCase()
+      )
+    ) {
+      return alert(`${name.value} is already in contacts`);
+    }
     this.props.submitHandler(this.state);
     this.resetForm();
   };

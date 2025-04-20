@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
-import {
-  AppContainer,
-  LabelFilter,
-  InputFilter,
-  Title,
-  SubTitle,
-} from './App.styled.jsx';
+import { contactsData } from 'data/contactsData.js';
+import { AppContainer, Title, SubTitle } from './App.styled.jsx';
 import { ContactForm } from 'components/ContactForm/ContactForm.jsx';
+import { Filter } from 'components/Filter/Filter.jsx';
+import { ContactList } from 'components/ContactList/ContactList.jsx';
 
 export class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: contactsData,
     filter: '',
   };
 
@@ -36,6 +28,13 @@ export class App extends Component {
     });
   };
 
+  deleteContact = id => {
+    const newContacts = this.state.contacts.filter(
+      contact => contact.id !== id
+    );
+    this.setState({ contacts: newContacts });
+  };
+
   render() {
     const { contacts, filter } = this.state;
     const filterNames = contacts.filter(contact =>
@@ -44,30 +43,17 @@ export class App extends Component {
     return (
       <AppContainer>
         <Title>Phonebook</Title>
-        <ContactForm submitHandler={this.formSubmitHandler} />
-        <div>
-          <SubTitle>Contacts</SubTitle>
-          <LabelFilter>
-            Find contacts by name
-            <InputFilter
-              type="search"
-              name="filter"
-              title="Сontact search field"
-              value={filter}
-              onChange={this.handleInputChange}
-              required
-            />
-          </LabelFilter>
-          {contacts.length > 0 && (
-            <ul>
-              {filterNames.map(contact => (
-                <li key={contact.id}>
-                  {contact.name}: {contact.number}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <ContactForm
+          contacts={contacts}
+          submitHandler={this.formSubmitHandler}
+        />
+        <SubTitle>Contacts</SubTitle>
+        <Filter filter={filter} changeHandler={this.handleInputChange} />
+        <ContactList
+          contacts={contacts}
+          filterNames={filterNames}
+          deleteContact={this.deleteContact}
+        />
       </AppContainer>
     );
   }
